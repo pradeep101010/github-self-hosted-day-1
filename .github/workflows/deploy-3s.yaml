@@ -7,10 +7,24 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted   # <-- your EC2 runner
+    runs-on: self-hosted   # EC2 runner
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+
+      - name: Install required dependencies (Ubuntu)
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y \
+            unzip \
+            curl \
+            jq \
+            tar \
+            awscli
+
+      - name: Verify AWS authentication (IAM role)
+        run: aws sts get-caller-identity
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
