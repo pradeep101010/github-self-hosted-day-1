@@ -40,10 +40,10 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
-        run: terraform -chdir=terraform init
+        run: terraform init
 
       - name: Terraform Apply
-        run: terraform -chdir=terraform apply -auto-approve -var bucket_name=my-ci-bucket-${{ github.run_id }}
+        run: terraform apply -auto-approve -var bucket_name=my-ci-bucket-${{ github.run_id }}
 
       - name: Upload file to S3
         run: aws s3 cp ./sample.txt s3://my-ci-bucket-${{ github.run_id }}/uploaded.txt
