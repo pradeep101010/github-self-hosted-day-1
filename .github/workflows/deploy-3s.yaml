@@ -1,0 +1,25 @@
+name: Deploy S3 Bucket
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted   # <-- your EC2 runner
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform -chdir=terraform init
+
+      - name: Terraform Apply
+        run: terraform -chdir=terraform apply -auto-approve -var bucket_name=my-ci-bucket-${{ github.run_id }}
+
+      - name: Upload file to S3
+        run: aws s3 cp ./sample.txt s3://my-ci-bucket-${{ github.run_id }}/uploaded.txt
