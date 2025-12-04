@@ -12,7 +12,10 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-
+      - name: Install NodeJS 18
+        run: |
+            curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+            sudo apt-get install -y nodejs
       - name: Install AWS CLI v2
         run: |
             sudo apt-get update
